@@ -1,0 +1,14 @@
+GET http://localhost:8080/albumid/1
+
+####
+
+GET http://localhost:8080/albumartist/John
+
+
+####
+GET http://localhost:8080
+
+####
+GET http://localhost:8080/albums"
+
+

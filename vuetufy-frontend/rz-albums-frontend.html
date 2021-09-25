@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<script src="rzFuncs.js"></script>
+
+
+<div id="myapp">
+    <!-- <template>
+        <v-data-table
+          :headers="headers"
+          :items="desserts"
+          :items-per-page="5"
+          class="elevation-1"
+        ></v-data-table>
+      </template> -->
+      
+    <h1>{{ message }}</h1>
+    <div class="text-h2">
+        <h2>Raw Data</h2>
+        <!-- <v-data-table
+            :items="output"
+        ></v-data-table> -->
+          
+        <!-- <v-table>
+            <v-table-row v-for="item in output" :key="item.id">{{ item }}</v-table-row>
+        </v-table> -->
+    </div>   
+
+    <span>
+        <h5>Albums</h5>
+        <ul>
+            <li v-for="item in output" :key="item.id">{{ item }}</li>
+        </ul>
+    </span>
+    <h5>Edit / Delete Section</h5>
+    <ul>
+    <li v-for="(item, index) in output" :key="item.id">
+        <v-flex class="flex-col p-4 col-example">
+            <v-card max-width=200>
+                <v-text-field style="height: 40px;" id="albumtitle" v-model="item.title" hint="album title">{{item.title}}</v-text-field>
+                <v-text-field style="height: 40px;" id="albumartist" v-model="item.artist" hint="album title">{{item.artist}}</v-text-field>
+                <v-text-field style="height: 40px;" id="albumprice" v-model="item.price" hint="album title">{{item.price}}</v-text-field>
+                <v-divider></v-divider>
+                <v-btn v-on:click="myEditAlbum(item.id, item.title, item.artist, item.price)">Sync Changes to Database</v-btn>
+                <v-btn v-on:click="myDeleteAlbum(item.id)">Delete from Database</v-btn>
+            </v-card>
+        </v-flex>
+    </li>
+    </ul>
+    <v-btn onclick="myFetch()">fetch albums from database</v-btn>
+    <br>
+    <div  style="font-family: Helvetica; size: 30; color: green">
+        <h3>Album Title</h3>
+        <v-text-field id="albumtitle" v-model="albumtitle" hint="album title"></v-text-field>
+        <h3>Album Artist</h3>
+        <v-text-field id="albumartist" v-model="albumartist" hint="album artist"></v-text-field>
+        <h3>Album Price</h3>
+        <v-text-field id="albumprice" v-model="albumprice" hint="album price"></v-text-field>
+    </div>
+    <v-btn onclick="myAdd(JSON.stringify({'artist': myv.albumartist, 'title': myv.albumtitle, 'price': parseFloat(myv.albumprice) }))">myAdd Album</v-btn>
+        
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+<script>
+    var myv = new Vue({
+    methods: {
+        myLoadAlbums: function() {
+            console.log("doing fetch")
+            fetch('http://localhost:8080/albums')
+            .then(response => response.text())
+            .then(data =>  myv.output = JSON.parse(data))
+        },
+        myDeleteAlbum: function(theAlbum) {
+            console.log("in mydelete albums")
+            myDeleteFromSQLDatabase(theAlbum)         
+        },
+        myEditAlbum: function(theAlbumID, theAlbumTitle, theAlbumArtist, theAlbumPrice) {
+            console.log("in my edit albums album= " + theAlbumID)
+            myEditAlbumInSQLDatabase(theAlbumID, theAlbumTitle, theAlbumArtist, theAlbumPrice)         
+        },
+    },
+    el: '#myapp',
+    vuetify: new Vuetify(),
+    data: {
+        message: 'yo!',
+        output: {},
+        albumtitle: '',
+        albumartist: '',
+        albumprice: 0.00,
+        albumlist: []
+        },
+        updated() {
+            console.log("updated")
+        },
+    })
+</script>
+
+
+
