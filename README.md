@@ -3,7 +3,12 @@
 ##backend in go uses mysql database
 
 
-run with ./run.sh to provide creds
+### run with ./run.sh to provide creds
+
+
+### params in params.sh
+
+
 
 ## frontend in vuejs
 
